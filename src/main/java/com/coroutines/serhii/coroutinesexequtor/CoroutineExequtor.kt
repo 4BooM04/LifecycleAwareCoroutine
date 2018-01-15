@@ -1,9 +1,6 @@
 package com.coroutines.serhii.coroutinesexequtor
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.OnLifecycleEvent
+import android.arch.lifecycle.*
 import android.util.Log
 import kotlinx.coroutines.experimental.*
 
@@ -38,9 +35,9 @@ class LifecycleAwareCoroutine : LifecycleObserver {
         }
     }
 
-    val isActive = job.isActive
-    val isCanceled = job.isCancelled
-    val isCompleted = job.isCompleted
+    val isActive: Boolean get() = job.isActive
+    val isCanceled: Boolean get() = job.isCancelled
+    val isCompleted: Boolean get() = job.isCompleted
 
     suspend fun <T> asyncNow(block: suspend () -> T): T {
         return async(CommonPool) {
@@ -75,7 +72,7 @@ class LifecycleAwareCoroutine : LifecycleObserver {
         }
     }
 
-    fun cancel(exception: CancellationException = CancellationException()) {
+    fun cancel(exception: Throwable? = null) {
         job.cancel(exception)
     }
 
